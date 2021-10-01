@@ -1,5 +1,10 @@
 <?php
 require_once 'connection.php';
+session_start();
+if(!isset($_SESSION["email"])) {
+  header("Location: login.php");
+  exit();
+}
 
 ?>
 
@@ -17,9 +22,20 @@ require_once 'connection.php';
 <body>
 
     <div class="header">
+      <div class="row">
+      
+        <div class="col-md-6">
+        <div class="header-left">
+       <p class="p-style"> Welcome <?php echo $_SESSION['email']; ?></p>
+    </div>
+        </div>
+        <div class="col-md-6">
         <div class="header-right">
             <a class="active" href="logout.php">LogOut</a>
+            </div>
         </div>
+      </div>
+    
     </div>
 
     <div style="padding-left:20px">
@@ -156,7 +172,7 @@ require_once 'connection.php';
                 <th>Percentage</th>
             </tr>
             <?php
-            $sql="select * from result";
+            $sql="select * from result order by perc DESC";
             $result=mysqli_query($conn,$sql);
           if ($result) {
 

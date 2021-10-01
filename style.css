@@ -56,18 +56,19 @@ body {
 h1
 {
     display: inline-block;
-    margin-left: 12rem;
+    margin-left: 38rem;
 }
 #customers {
-    font-family: Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 90%;
-    margin: auto;
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 40% !important;
+  margin: auto;
   }
   
   #customers td, #customers th {
     border: 1px solid #ddd;
     padding: 8px;
+    font-size: 1.5rem;
   }
   
   #customers tr:nth-child(even){background-color: #f2f2f2;}
@@ -81,17 +82,23 @@ h1
     background-color: #17a2b8;
     color: white;
   }
+  #customers tr td a.a-link{
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+    
+  }
   .button {
     background-color: #17a2b8; 
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 11px 32px;
    float: right;
     text-decoration: none;
     /* display: inline-block; */
     font-size: 2rem;
     margin-top: 1rem;
-margin-right: 7rem;
+margin-right: 39rem;
 margin-bottom: 1rem;
 border-radius: 0.5rem;
   }

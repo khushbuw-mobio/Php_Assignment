@@ -1,3 +1,8 @@
+<?php
+require_once 'connection.php';
+
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -145,31 +150,23 @@
     <table id="customers">
             <tr>
                 <th>Students</th>
-                <th>total marks</th>
                 <th>Percentage</th>
             </tr>
-            <tr>
-                <td>Amit</td>
-                <td>600</td>
-                <td>70</td>
-            </tr>
-            <tr>
-                <td>Nisha</td>
-                <td>600</td>
-                <td>60</td>
-            </tr>
-            <tr>
-                <td>Mona</td>
-                <td>600</td>
-                <td>80</td>
-            </tr>
+            <?php
+            $sql="select * from result";
+            $result=mysqli_query($conn,$sql);
+          if ($result) {
+
+    /* fetch associative array */
+    while ($row = mysqli_fetch_assoc($result)) {   ?>
+      <tr>
+      <td><?php echo $row['name']; ?> </td>
+      <td><?php echo $row['perc']; ?></td>
+  </tr>
+        <?php } }
+            ?>
             
-            <tr>
-                <td>Deepak</td>
-                <td>600</td>
-                <td>40</td>
-            </tr>
-          
+            
         </table>
     </div>    
       

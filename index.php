@@ -31,7 +31,7 @@ if(!isset($_SESSION["email"])) {
         <div class="col-md-6">
         <div class="header-left">
        <!-- <p class="p-style"> Welcome <?php echo $_SESSION['email']; ?></p> -->
-       <p class="p-style"> Welcome <?php echo $_SESSION['user']; ?></p>
+       <p class="p-style"> Welcome <?php echo $_SESSION['first_name']." ".$_SESSION['last_name']; ?></p>
     </div>
         </div>
         <div class="col-md-6">
@@ -220,16 +220,22 @@ if(!isset($_SESSION["email"])) {
 <div class="col-sm-3"><span class="mdlabel">Student Name</span></div>
 <div class="col-sm-9">
 <div class="form-group">
-<input type="text" id="name" name="name" value= "<?php echo $row['name']; ?> " class="form-control">
+<input type="text" id="name" name="name" value= "<?php echo $row['name']; ?> " class="form-control" readonly=''>
 </div>
 </div>
-
-  <!-- <div class="col-sm-3"><span class="mdlabel">Marks Assigner</span></div>
-  <div class="col-sm-9">
-  <div class="form-group">
-  <input type="text" id="assigner" name="assigner" value= "<?php echo $row['assign_marks_by']; ?>" class="form-control">
-  </div>
-  </div> -->
+<?php
+$lid=$row['assign_marks_by'];
+  $s="select * from login where id=$lid";
+  $sq=mysqli_query($conn,$s);
+  $q=mysqli_fetch_array($sq);
+  // echo $q['first_name'];
+?>
+<div class="col-sm-3"><span class="mdlabel">Marks Assigner</span></div>
+<div class="col-sm-9">
+<div class="form-group">
+<input type="text" id="assigner" name="assigner" value= "<?php echo $q['first_name']; ?>" class="form-control" readonly=''>
+</div>
+</div>
 
 <div class="col-sm-3"><span class="mdlabel">Maths</span></div>
 <div class="col-sm-3">

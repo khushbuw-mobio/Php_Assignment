@@ -4,6 +4,10 @@ session_start();
 if(!isset($_SESSION["email"])) {
   header("Location: login.php");
   exit();
+  $s_email=$_SESSION['email'];
+  $sql="select first_name from login where email=$s_email";
+  $qry=mysqli_query($conn,$sql);
+  
 }
 
 ?>
@@ -26,7 +30,8 @@ if(!isset($_SESSION["email"])) {
       
         <div class="col-md-6">
         <div class="header-left">
-       <p class="p-style"> Welcome <?php echo $_SESSION['email']; ?></p>
+       <!-- <p class="p-style"> Welcome <?php echo $_SESSION['email']; ?></p> -->
+       <p class="p-style"> Welcome <?php echo $_SESSION['user']; ?></p>
     </div>
         </div>
         <div class="col-md-6">
@@ -212,12 +217,19 @@ if(!isset($_SESSION["email"])) {
     <div class="modal-body">
 <div class="row">
 
-<div class="col-sm-3"><span class="mdlabel">Name</span></div>
+<div class="col-sm-3"><span class="mdlabel">Student Name</span></div>
 <div class="col-sm-9">
 <div class="form-group">
 <input type="text" id="name" name="name" value= "<?php echo $row['name']; ?> " class="form-control">
 </div>
 </div>
+
+  <!-- <div class="col-sm-3"><span class="mdlabel">Marks Assigner</span></div>
+  <div class="col-sm-9">
+  <div class="form-group">
+  <input type="text" id="assigner" name="assigner" value= "<?php echo $row['assign_marks_by']; ?>" class="form-control">
+  </div>
+  </div> -->
 
 <div class="col-sm-3"><span class="mdlabel">Maths</span></div>
 <div class="col-sm-3">
@@ -338,7 +350,7 @@ if(!isset($_SESSION["email"])) {
         var p=(total/600) *100;
         $('#perc').val(p.toFixed(2));    
 });
-
+  
       </Script>
 
 </body>

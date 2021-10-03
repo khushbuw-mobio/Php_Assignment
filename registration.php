@@ -1,46 +1,47 @@
 <?php
-session_start();
-require_once 'connection.php';
-if(isset($_SESSION['email']))
-{
-    header("location:index.php");
-}
-?>
-<?php   
-$error=''; 
-if(isset($_POST['login']))  {
-        include('connection.php');  
-       
-        $email = $_POST['emailid'];  
-        $password = $_POST['password'];  
+$err_empty='';
+$err_invalid_email='';
+$err_sort_pwd='';
+$err_pwd_match='';
+$err_not_fire_query='';
+    require_once 'connection.php';
+if (isset($_POST['signup'])) {
+        $firstname=$_POST['firstname'];
+        $lastname=$_POST['lastname'];
+        $email=$_POST['email'];
+        $password=$_POST['password'];
+        $confirmpassword=$_POST['confirm_password'];
+        if(empty($firstname && $lastname && $email && $password)){
+              $err_empty="empty fields.<br>";
+        }
+        function checkemail($str) {
+            return (!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $str)) ? FALSE : TRUE;
+        }
+        if(!checkemail($email)){
+            $err_invalid_email="Invalid email address.<br>";
+        }
+        if(strlen($password)<5 && strlen($confirmpassword)<5)
+        {
+            $err_sort_pwd="enter atleast 5 character for password.<br>";
+        }
+        if($password === $confirmpassword)
+        {
+            $query="INSERT INTO `login` (`first_name`, `last_name`, `emailid`, `password`) VALUES ('$firstname', '$lastname', '$email', '$password')";
+                $result   = mysqli_query($conn, $query);
+                if ($result) {
+                    header("location:login.php");
+                } else {
+                    header("location:register.php");
+					$err_not_fire_query="Something went Wrong";
+                }
+            }else{
+         $err_pwd_match= "password should be match";
+        }
         
-          
-            
-            $email = stripcslashes($email);  
-            $password = stripcslashes($password);  
-            $username = mysqli_real_escape_string($conn, $email);  
-            $password = mysqli_real_escape_string($conn, $password);  
-          
-            $sql = "select *from login where emailid = '$email' and password = '$password'";  
-            $result = mysqli_query($conn, $sql);   
-            $row = mysqli_fetch_array($result, MYSQLI_ASSOC); 
-			// print_r($row) ;
-			
-            $count = mysqli_num_rows($result);  
-              
-            if($count == 1){  
-               header("location:index.php");
-			   $user=$row['first_name']." ". $row['last_name'];
-               $_SESSION['email']=$email;
-			   $_SESSION['user']=$user;
-			
-            
-            }  
-            else{  
-                $error='Please enter Correct emailId Password';  
-            }   
-         }  
-    ?>  
+        
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,23 +71,48 @@ if(isset($_POST['login']))  {
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-			<div class="erro-msg">
-
-			</div>	
+				
 
 				<form class="login100-form validate-form" action="#" method="POST">
 					<span class="login100-form-title">
-						Member Login
+						Member SignUp
 					</span>
 					<div class="danger">
 						<p><?php
-						if(strlen($error)>0){
-						 echo $error; 
+						if(strlen($err_empty)>0){
+						 echo $err_empty; 
 						}
+						if(strlen($err_invalid_email)>0){
+							echo $err_invalid_email; 
+						   }
+						   if(strlen($err_sort_pwd)>0){
+							echo $err_sort_pwd; 
+						   }
+						   if(strlen($err_pwd_match)>0){
+							echo $err_pwd_match; 
+						   }
+						   if(strlen($err_not_fire_query)>0){
+							echo $err_not_fire_query; 
+						   }
 						?></p>
 					</div>
+                    <div class="wrap-input100 validate-input" data-validate = "Valid email is required: Name">
+						<input class="input100" type="text" name="firstname" placeholder="FirstName">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-user" aria-hidden="true"></i>
+						</span>
+					</div>
+                    <div class="wrap-input100 validate-input" data-validate = "Valid email is required: Name">
+						<input class="input100" type="text" name="lastname" placeholder="LastName">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+                        <i class="fa fa-user" area-hidden="true"></i>
+						</span>
+					</div>
+
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input class="input100" type="text" name="emailid" placeholder="Email">
+						<input class="input100" type="text" name="email" placeholder="Email">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
@@ -100,25 +126,25 @@ if(isset($_POST['login']))  {
 							<i class="fa fa-lock" aria-hidden="true"></i>
 						</span>
 					</div>
+                    <div class="wrap-input100 validate-input" data-validate = "Password is required">
+						<input class="input100" type="password" name="confirm_password" placeholder="Password">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+					</div>
 					
 					<div class="container-login100-form-btn">
-						<button type="submit" name="login" class="login100-form-btn">
-							Login
+						<button type="submit" name="signup" class="login100-form-btn">
+							SignUp
 						</button>
 					</div>
 
-					<div class="text-center p-t-12">
-						<span class="txt1">
-							Forgot
-						</span>
-						<a class="txt2" href="#">
-							Username / Password?
-						</a>
-					</div>
+					
 
 					<div class="text-center p-t-136">
-						<a class="txt2" href="registration.php">
-							Create your Account
+						<a class="txt2" href="login.php">
+							Already have an account SignIn
 							<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
 						</a>
 					</div>

@@ -12,42 +12,50 @@ if (isset($_POST['signup'])) {
         $email=$_POST['email'];
         $password=$_POST['password'];
         $confirmpassword=$_POST['confirm_password'];
-		// $hashedPass = password_hash($password, PASSWORD_DEFAULT);
-        if(empty($firstname && $lastname && $email && $password)){
-              $err_empty="empty fields.<br>";
-        }
-		$sq="SELECT * FROM `login` WHERE emailid='$email' LIMIT 1";
+		$hashedPass = password_hash("", PASSWORD_DEFAULT);
+		$sq="SELECT `emailid` from login WHERE `emailid`='$email' LIMIT 1";
 		$sqry=mysqli_query($conn,$sq);
 		if(mysqli_num_rows($sqry)>0)
 		{
 			$err_exists="email already exists";
 		}
-        function checkemail($str) {
-            return (!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $str)) ? FALSE : TRUE;
-        }
-        if(!checkemail($email)){
-            $err_invalid_email="Invalid email address.<br>";
-        }
-        if(strlen($password)<5 && strlen($confirmpassword)<5)
-        {
-            $err_sort_pwd="enter atleast 5 character for password.<br>";
-        }
-        if($password === $confirmpassword)
-        {
-            $query="INSERT INTO `login` (`first_name`, `last_name`, `emailid`, `password`) VALUES ('$firstname', '$lastname', '$email', '$password')";
-                $result   = mysqli_query($conn, $query);
-                if ($result) {
-                    header("location:login.php");
-                } else {
-                    header("location:register.php");
-					$err_not_fire_query="Something went Wrong";
-                }
-            }else{
-         $err_pwd_match= "password should be match";
-        }
+		else
+		{
+			// function checkemail($str) {
+			// 	    return (!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $str)) ? FALSE : TRUE;
+			// 	}
+			// 	if(!checkemail($email)){
+			// 	    $err_invalid_email="Invalid email address.<br>";
+			// 	}
+			if($password === $confirmpassword)
+			{
+				if(strlen($password)<5 && strlen($confirmpassword)<5)
+        		{
+          			  $err_sort_pwd="enter atleast 5 character for password.<br>";
+        		}
+				else
+				{
+					$query="INSERT INTO `login` (`first_name`, `last_name`, `emailid`, `password`) VALUES ('$firstname', '$lastname', '$email', '$hashedPass')";
+					$result   = mysqli_query($conn, $query);
+					if ($result) {
+						header("location:login.php");
+					} else {
+						header("location:register.php");
+						$err_not_fire_query="Something went Wrong";
+					}
+				}
+			
+			}
+			else
+			{
+				$err_pwd_match= "password should be match";
+			}
+
+		}
+            }
         
         
-    }
+    
 ?>
 
 <!DOCTYPE html>
@@ -93,9 +101,13 @@ if (isset($_POST['signup'])) {
 						 </p>
 						<?php
 						}
+						if(strlen($err_exists)>0){ ?>
+							<p><?php echo $err_exists; ?> </p>
+							<?php  }
+						   
 						if(strlen($err_invalid_email)>0){ ?>
 							<p><?php echo $err_invalid_email; ?>  </p>
-						   }
+						  <?php }
 						   if(strlen($err_sort_pwd)>0){ ?>
 							<p><?php echo $err_sort_pwd; ?> </p>
 							<?php  }
@@ -105,9 +117,6 @@ if (isset($_POST['signup'])) {
 						   if(strlen($err_not_fire_query)>0){ ?>
 							<p> <?php echo $err_not_fire_query; ?> </p>
 							<?php  } 
-						   if(strlen($err_exists)>0){ ?>
-							<p><?php echo $err_exists; ?> </p>
-							<?php  }
 						   
 						?></p>
 					</div>

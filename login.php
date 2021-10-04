@@ -14,32 +14,36 @@ if(isset($_POST['login']))  {
         $email = $_POST['emailid'];  
         $password = $_POST['password'];  
         
+                
+            // $email = stripcslashes($email);  
+            // $password = stripcslashes($password);  
+            // $username = mysqli_real_escape_string($conn, $email);  
+            // $password = mysqli_real_escape_string($conn, $password);  
           
-            
-            $email = stripcslashes($email);  
-            $password = stripcslashes($password);  
-            $username = mysqli_real_escape_string($conn, $email);  
-            $password = mysqli_real_escape_string($conn, $password);  
-          
-            $sql = "select *from login where emailid = '$email' and password = '$password'";  
+            $sql = "select * from login where emailid = '$email' ";  
             $result = mysqli_query($conn, $sql);   
             $row = mysqli_fetch_array($result, MYSQLI_ASSOC); 
-			// print_r($row) ;
-			
-            $count = mysqli_num_rows($result);  
-              
-            if($count == 1){  
-               header("location:index.php");
-			   $user=$row['first_name']." ". $row['last_name'];
-               $_SESSION['email']=$email;
-			   $_SESSION['user']=$user;
-			
-            
-            }  
-            else{  
-                $error='Please enter Correct emailId Password';  
+			print_r($row) ;
+			// echo $row['password'];
+			$hashedpass=password_verify($password,$row['password']);
+			if($hashedpass)
+			{
+				header("location:index.php");
+					$firstname=$row['first_name'];
+					$lastname=$row['last_name'];
+					$id=$row['id'];
+					$_SESSION['email']=$email;
+					$_SESSION['first_name']=$firstname;
+					$_SESSION['last_name']=$lastname;
+					$_SESSION['id']=$id;
+			}
+			else
+			{
+				header('location:login.php');
+				$error='please enter correct password';
+			}
             }   
-         }  
+        
     ?>  
 <!DOCTYPE html>
 <html lang="en">

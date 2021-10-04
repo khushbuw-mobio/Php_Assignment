@@ -12,7 +12,7 @@ if (isset($_POST['signup'])) {
         $email=$_POST['email'];
         $password=$_POST['password'];
         $confirmpassword=$_POST['confirm_password'];
-		$hashedPass = password_hash("", PASSWORD_DEFAULT);
+		$hashedPass = password_hash($password, PASSWORD_DEFAULT);
 		$sq="SELECT `emailid` from login WHERE `emailid`='$email' LIMIT 1";
 		$sqry=mysqli_query($conn,$sq);
 		if(mysqli_num_rows($sqry)>0)

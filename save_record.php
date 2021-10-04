@@ -12,7 +12,7 @@ if(isset($_POST['save']))
     $english=$_POST['english'];
     $total=$_POST['total'];
     $perc=$_POST['perc'];
-    $marks_assign_by=$_SESSION['user'];
+    $marks_assign_by=$_SESSION['id'];
   
 
     if(!empty($name) || !empty($math) || !empty($biology) || !empty($history) || !empty($physics) || !empty($chemistry) || !empty($english) || !empty($total) || !empty($perc))

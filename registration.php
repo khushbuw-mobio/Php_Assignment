@@ -1,6 +1,7 @@
 <?php
 $err_empty='';
 $err_invalid_email='';
+$err_exists='';
 $err_sort_pwd='';
 $err_pwd_match='';
 $err_not_fire_query='';
@@ -11,9 +12,16 @@ if (isset($_POST['signup'])) {
         $email=$_POST['email'];
         $password=$_POST['password'];
         $confirmpassword=$_POST['confirm_password'];
+		// $hashedPass = password_hash($password, PASSWORD_DEFAULT);
         if(empty($firstname && $lastname && $email && $password)){
               $err_empty="empty fields.<br>";
         }
+		$sq="SELECT * FROM `login` WHERE emailid='$email' LIMIT 1";
+		$sqry=mysqli_query($conn,$sq);
+		if(mysqli_num_rows($sqry)>0)
+		{
+			$err_exists="email already exists";
+		}
         function checkemail($str) {
             return (!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $str)) ? FALSE : TRUE;
         }
@@ -80,20 +88,27 @@ if (isset($_POST['signup'])) {
 					<div class="danger">
 						<p><?php
 						if(strlen($err_empty)>0){
-						 echo $err_empty; 
+						 ?><p>
+							 <?php  echo $err_empty;  ?>
+						 </p>
+						<?php
 						}
-						if(strlen($err_invalid_email)>0){
-							echo $err_invalid_email; 
+						if(strlen($err_invalid_email)>0){ ?>
+							<p><?php echo $err_invalid_email; ?>  </p>
 						   }
-						   if(strlen($err_sort_pwd)>0){
-							echo $err_sort_pwd; 
-						   }
-						   if(strlen($err_pwd_match)>0){
-							echo $err_pwd_match; 
-						   }
-						   if(strlen($err_not_fire_query)>0){
-							echo $err_not_fire_query; 
-						   }
+						   if(strlen($err_sort_pwd)>0){ ?>
+							<p><?php echo $err_sort_pwd; ?> </p>
+							<?php  }
+						   if(strlen($err_pwd_match)>0){ ?>
+							<p> <?php echo $err_pwd_match;?>  </p>
+							<?php  }
+						   if(strlen($err_not_fire_query)>0){ ?>
+							<p> <?php echo $err_not_fire_query; ?> </p>
+							<?php  } 
+						   if(strlen($err_exists)>0){ ?>
+							<p><?php echo $err_exists; ?> </p>
+							<?php  }
+						   
 						?></p>
 					</div>
                     <div class="wrap-input100 validate-input" data-validate = "Valid email is required: Name">

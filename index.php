@@ -182,9 +182,11 @@ if(!isset($_SESSION["email"])) {
           if ($result) {
 
     /* fetch associative array */
-    while ($row = mysqli_fetch_assoc($result)) {   ?>
+    while ($row = mysqli_fetch_assoc($result)) {  
+    
+     ?>
       <tr>
-      <td><a href="" class="a-link" data-toggle="modal" data-target="#myModal1"><?php echo $row['name']; ?></a> </td>
+      <td><a href="" class="a-link" data-toggle="modal" data-target="#<?php echo $row['id']; ?>"><?php echo $row['name']; ?></a> </td>
       <td><?php echo $row['perc']; ?></td>
   </tr>
         <?php } }
@@ -203,7 +205,7 @@ if(!isset($_SESSION["email"])) {
     /* fetch associative array */
     while ($row = mysqli_fetch_assoc($result)) {   ?>
 
-    <div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal fade" id="<?php echo $row['id']; ?>" role="dialog">
 
 <div class="modal-dialog">
 <form action="save_record.php" method="post">
@@ -224,16 +226,17 @@ if(!isset($_SESSION["email"])) {
 </div>
 </div>
 <?php
-$lid=$row['assign_marks_by'];
-  $s="select * from login where id=$lid";
-  $sq=mysqli_query($conn,$s);
-  $q=mysqli_fetch_array($sq);
-  // echo $q['first_name'];
+$assign_id=$row['assign_marks_by'];
+$qry=mysqli_query($conn,"SELECT * FROM `login` where id=$assign_id");
+$row1 = mysqli_fetch_array($qry);
+// echo $assign_id;
+// print_r($row1);
 ?>
 <div class="col-sm-3"><span class="mdlabel">Marks Assigner</span></div>
 <div class="col-sm-9">
 <div class="form-group">
-<input type="text" id="assigner" name="assigner" value= "<?php echo $q['first_name']; ?>" class="form-control" readonly=''>
+<input type="text" id="assigner" name="assigner"
+ value="<?php echo $row1['first_name']; ?>" class="form-control" readonly=''>
 </div>
 </div>
 

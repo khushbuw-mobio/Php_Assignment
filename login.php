@@ -2,7 +2,7 @@
 session_start();
 require_once 'connection.php';
 if (isset($_SESSION['email'])) {
-	header("location:index.php");
+	header("location:index1.php");
 }
 $err = "";
 $err_1 = "";
@@ -30,7 +30,7 @@ if (isset($_POST['login'])) {
 			$err_1 = 'please enter correct password';
 		} else {
 
-			header("location:index.php");
+			header("location:index1.php");
 			$_SESSION['email'] = $email;
 			$_SESSION['first_name'] = $firstname;
 			$_SESSION['last_name'] = $lastname;

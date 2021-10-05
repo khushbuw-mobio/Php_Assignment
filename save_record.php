@@ -19,7 +19,7 @@ if(isset($_POST['save']))
     {
         $sql="INSERT INTO `result` (`name`, `math`, `biology`, `history`, `physics`, `chemistry`, `english`, `total`, `perc`,`assign_marks_by`) VALUES ('$name','$math','$biology','$history','$physics','$chemistry','$english','$total','$perc','$marks_assign_by')";
         if(mysqli_query($conn, $sql)){
-            header("location:index.php");
+            header("location:index1.php");
         } else{
             // echo "ERROR: Could not able to execute $sql. " . mysqli_error($conn);
             echo "someting wrong";
